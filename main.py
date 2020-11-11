@@ -1,11 +1,13 @@
 import os
 import re
 import time
+import string as str
 from nltk.tag import StanfordNERTagger
 from nltk.tokenize import word_tokenize
 from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
+from collections import Counter
 
 # Use this to download punkt package
 #import nltk as nltk
@@ -20,19 +22,11 @@ st = StanfordNERTagger(cwd + '\stanford-ner-4.0.0\classifiers\english.muc.7class
 					   cwd + '\stanford-ner-4.0.0\stanford-ner.jar',
 					   encoding='utf-8')
 
-text = 'On Sunday that playing time went to rookie defensive end Neville Gallimore, and if his performance was any indication then his future looks a lot brighter than the Cowboys\' present.'
-
-tokenized_text = word_tokenize(text)
-classified_text = st.tag(tokenized_text)
-
-print(classified_text)
-
 #consumer key, consumer secret, access token, access secret.
-ckey="sdgsdgg"
-csecret="sdgsgsdg"
-atoken="sdgsd"
-asecret="sdgdgsdg"
-
+ckey="dfgfg"
+csecret="dfgdf"
+atoken="dfgdfg-dfgdg"
+asecret="dfgdfg"
 
 list_of_tweets = []
 
@@ -65,12 +59,12 @@ current_time = time.strftime("%H:%M:%S", t)
 print(current_time)
 
 # Set the runtime for the connection to run for
-runtime = 15
+runtime = 10
 
 # Connect to stream with selected filter
 twitterStream = Stream(auth, listener(), tweet_mode= 'extended')
 # Must be async for disconnection to work properly
-twitterStream.filter(track=["#COVID19"],is_async=True)
+twitterStream.filter(track=["Trump", "Election", "Biden"],is_async=True)
 
 # Sleep for runtime duration to be connected for that time
 time.sleep(runtime)
@@ -84,17 +78,25 @@ print(current_time)
 
 print("List of Tweets:")
 index = 0
+all_words = []
 for tweet in list_of_tweets:
 	index+=1
 	print("Tweet #", index, ": ")
-	print(type(tweet))
+
 	# Gets rid of links
 	text = re.sub(r'http\S+', '', tweet)
 	# Gets rid of @'s (@POTUS, @user2424, etc.)
 	text = re.sub(r'@\S+', '', text)
 	# Gets rid of #'s (#WTF, #BREAKING, etc.)
 	text = re.sub(r'#\S+', '', text)
+	# Gets rid of punctuation
+	text = re.sub(r'[^\w\s]', '', text)
+
 	print(text)
+
 	tokenized_text = word_tokenize(text)
+	all_words.extend(tokenized_text)
 	classified_text = st.tag(tokenized_text)
 	print(classified_text)
+
+print(Counter(all_words))
