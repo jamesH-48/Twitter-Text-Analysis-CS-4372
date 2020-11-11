@@ -23,10 +23,10 @@ st = StanfordNERTagger(cwd + '\stanford-ner-4.0.0\classifiers\english.muc.7class
 					   encoding='utf-8')
 
 #consumer key, consumer secret, access token, access secret.
-ckey="dfgfg"
-csecret="dfgdf"
-atoken="dfgdfg-dfgdg"
-asecret="dfgdfg"
+ckey="dsfdsf"
+csecret="sdfds"
+atoken="sdfds-sdfds"
+asecret="sdfdsf"
 
 list_of_tweets = []
 
@@ -59,7 +59,7 @@ current_time = time.strftime("%H:%M:%S", t)
 print(current_time)
 
 # Set the runtime for the connection to run for
-runtime = 10
+runtime = 1
 
 # Connect to stream with selected filter
 twitterStream = Stream(auth, listener(), tweet_mode= 'extended')
@@ -79,6 +79,7 @@ print(current_time)
 print("List of Tweets:")
 index = 0
 all_words = []
+only_tagged_words = []
 for tweet in list_of_tweets:
 	index+=1
 	print("Tweet #", index, ": ")
@@ -91,12 +92,25 @@ for tweet in list_of_tweets:
 	text = re.sub(r'#\S+', '', text)
 	# Gets rid of punctuation
 	text = re.sub(r'[^\w\s]', '', text)
-
+	'''
+		Seems like it needs capitalization for entity recognition
+	'''
+	# Change to lower-case to not have repeats (the, The, THE, etc.)
+	# text = text.lower()
 	print(text)
 
 	tokenized_text = word_tokenize(text)
 	all_words.extend(tokenized_text)
 	classified_text = st.tag(tokenized_text)
+	for text in classified_text:
+		if text[1] != 'O':
+			only_tagged_words.append(text[0])
 	print(classified_text)
 
+# Final Print
+print("=======================================================================")
+print("Count of All Words: ")
 print(Counter(all_words))
+print()
+print("Count of All Entity Tagged Words: ")
+print(Counter(only_tagged_words))
