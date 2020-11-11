@@ -59,10 +59,10 @@ def word_counter(list_of_tweets, st, runtime):
 
 def twitter_text(interval_runtime, num_of_intervals):
 	#consumer key, consumer secret, access token, access secret.
-	ckey="assaf"
-	csecret="asfsaf"
-	atoken="safas-asfaf"
-	asecret="asfsaf"
+	ckey="sdfds"
+	csecret="sdfdsf"
+	atoken="sdfs-sdfds"
+	asecret="sdfdsf"
 
 	# Maintains the entire set of tweets over all intervals
 	list_of_tweets = []
@@ -91,7 +91,9 @@ def twitter_text(interval_runtime, num_of_intervals):
 				pass
 			if status.lang != 'en':
 				return
+			print("--------------------------------------------------------------")
 			print(status.text)
+			print("--------------------------------------------------------------")
 			# print(status.user.screen_name)
 			list_of_tweets.append(status.text)
 
@@ -105,12 +107,14 @@ def twitter_text(interval_runtime, num_of_intervals):
 	# Connect to stream with selected filter
 	twitterStream = Stream(auth, listener(), tweet_mode= 'extended')
 	# Must be async for disconnection to work properly
-	twitterStream.filter(track=["Thanksgiving"],is_async=True)
+	twitterStream.filter(track=["Russia", "Ukraine"],is_async=True)
 
 	# Print current time
 	t = time.localtime()
 	current_time = time.strftime("%H:%M:%S", t)
+	print("========")
 	print(current_time)
+	print("========")
 
 	for i in range(num_of_intervals):
 		# Sleep for interval_runtime duration to be connected for that time
@@ -120,7 +124,9 @@ def twitter_text(interval_runtime, num_of_intervals):
 		# Print current time
 		t = time.localtime()
 		current_time = time.strftime("%H:%M:%S", t)
+		print("========")
 		print(current_time)
+		print("========")
 
 	# disconnect the stream and stop streaming
 	twitterStream.disconnect()
@@ -146,7 +152,7 @@ if __name__ == '__main__':
 	# interval_runtime = 5 == 5 seconds
 	# if interval_runtime = 5 seconds && num_of_intervals = 5
 	# -> total_runtime = 25 seconds
-	interval_runtime = 3
+	interval_runtime = 5
 	num_of_intervals = 5
 
 	# Call main api function call to gather tweets/text
