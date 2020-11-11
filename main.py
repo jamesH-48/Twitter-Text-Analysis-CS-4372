@@ -95,3 +95,6 @@ for tweet in list_of_tweets:
 	# Gets rid of #'s (#WTF, #BREAKING, etc.)
 	text = re.sub(r'#\S+', '', text)
 	print(text)
+	tokenized_text = word_tokenize(text)
+	classified_text = st.tag(tokenized_text)
+	print(classified_text)
